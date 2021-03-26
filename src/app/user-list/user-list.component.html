@@ -1,0 +1,238 @@
+<div class="card-header">
+  <h1 class="text-capitalize text-primary">User Management</h1>
+  <div class="row">
+    <div class="col-6">
+      <button type="button" class="btn btn-primary btn-sm shadow" (click)="openCreateModal()">Create</button>
+    </div>
+    <div class="col-6 input-group">
+      <select class="form-select" name="search" [(ngModel)]="searchField" (ngModelChange)="checkSearch()"
+              aria-label="Default select example">
+        <option value="name">Email or Name</option>
+        <option value="address">Address</option>
+        <option value="account_number">Account Number</option>
+
+        <option value="balanceG">Balance greater than</option>
+        <option value="balanceL">Balance less than</option>
+
+      </select>
+      <input class="form-control" [type]="isText? 'text' : 'number'" name="search" [(ngModel)]="search"
+             placeholder="Search">
+      <button (click)="onSearch()" class="btn-success">Search</button>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <pagination-controls (pageChange)="page = $event"></pagination-controls>
+  <table class="table table-bordered table-hover">
+    <thead class="thead-light">
+    <tr>
+
+      <th scope="col" (click)="sort('account_number')">Account-Number</th>
+      <th scope="col" (click)="sort('balance')">Balance</th>
+      <th scope="col" (click)="sort('lastname')">Last-Name</th>
+      <th scope="col" (click)="sort('firstname')">First-Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Address</th>
+      <th scope="col">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr
+      *ngFor="let user of userList | orderBy: key : reverse | paginate: {itemsPerPage: 10, currentPage: page};let i = index">
+
+      <td scope="row">{{user.account_number}}</td>
+      <td>{{user.balance}}</td>
+      <td>{{user.lastname}}</td>
+      <td>{{user.firstname}}</td>
+      <td>{{user.email}}</td>
+      <td>{{user.address}}</td>
+      <td>
+        <button class="btn btn-info btn-sm" (click)="openModalInfo(user)"> Information</button>
+        <button class="btn btn-warning btn-sm" (click)="openModalEdit(user,i)"> Update</button>
+        <button class="btn btn-danger btn-sm" (click)="openModalConfirmDelete(user,i)"> Delete</button>
+      </td>
+
+    </tr>
+    </tbody>
+
+  </table>
+</div>
+<!-- Modal delete-->
+<div class="modal fade" id="confirmDel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Are you sure you want to Remove User have account_number: {{delete_account_number}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" (click)="delete()" class="btn btn-primary">Sure</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" *ngIf="isCreate">Add new user</h5>
+        <h5 class="modal-title" id="exampleModalLabel1" *ngIf="!isCreate && !isInfo">Edit user</h5>
+        <h5 class="modal-title" id="exampleModalLabel2" *ngIf="isInfo">User info</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form (ngSubmit)="f.form.valid && submitModel()" #f="ngForm">
+        <div class="modal-body">
+
+
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon0">Username</span>
+            <input [attr.disabled]="isInfo?'disabled' : null" type="text"
+                   class="form-control" placeholder="Username" name="username"
+                   [(ngModel)]="userModal.username" aria-label="Username"
+                   aria-describedby="basic-addon0">
+          </div>
+
+          <div class="mb-3">
+            <div class="input-group">
+              <span class="input-group-text" id="basic-addon1">Email</span>
+              <input [attr.disabled]="isInfo?'disabled' : null" type="text"
+                     required pattern="[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+" #email="ngModel"
+                     [class.is-invalid]="email.invalid && email.touched"
+                     class="form-control" placeholder="Email" name="email"
+                     [(ngModel)]="userModal.email" aria-label="Email "
+                     aria-describedby="basic-addon1">
+            </div>
+            <div [class.d-none]="email.valid || email.untouched">
+              <small class="text-danger" *ngIf="email.errors?.required">Email is required</small>
+              <small class="text-danger" *ngIf="email.errors?.pattern">Wrong pattern ex: name@gmail.com</small>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <div class="input-group" *ngIf="!isInfo">
+              <span class="input-group-text" id="basic-addon2">Password</span>
+              <input type="text" class="form-control" placeholder="password"
+                     name="password" [(ngModel)]="userModal.password"
+                     aria-label="password" aria-describedby="basic-addon2">
+            </div>
+            <!--            pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" #password="ngModel"-->
+            <!--            [class.is-invalid]="password.invalid && password.touched"-->
+            <!--            <small class="text-danger" [class.d-none]="password.valid || password.untouched">Minimum eight characters, at least one letter and one number</small>-->
+          </div>
+
+          <div class="mb-3">
+            <div class="input-group ">
+              <span class="input-group-text" id="basic-addon3">Account number</span>
+              <input [attr.disabled]="isInfo?'disabled' : null" type="number"
+                     required #account_number="ngModel"
+                     [class.is-invalid]="account_number.invalid && account_number.touched"
+                     class="form-control" placeholder="account_number"
+                     name="account_number" [(ngModel)]="userModal.account_number"
+                     aria-label="Account number" aria-describedby="basic-addon3">
+            </div>
+            <small class="text-danger" [class.d-none]="account_number.valid || account_number.untouched">Account number
+              is required</small>
+          </div>
+
+
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon4">Balance</span>
+            <input [attr.disabled]="isInfo?'disabled' : null" type="number" class="form-control" placeholder="balance"
+                   name="balance" [(ngModel)]="userModal.balance" aria-label="Balance" aria-describedby="basic-addon4">
+          </div>
+
+
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon5">Firstname</span>
+            <input [attr.disabled]="isInfo?'disabled' : null" type="text" class="form-control" placeholder="firstname"
+                   name="firstname" [(ngModel)]="userModal.firstname" aria-label="Firstname"
+                   aria-describedby="basic-addon5">
+          </div>
+
+
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon6">Lastname</span>
+            <input [attr.disabled]="isInfo?'disabled' : null" type="text" class="form-control" placeholder="lastname"
+                   name="lastname" [(ngModel)]="userModal.lastname" aria-label="Lastname"
+                   aria-describedby="basic-addon6">
+          </div>
+
+          <div class="mb-3">
+            <div class="input-group">
+              <span class="input-group-text" id="basic-addon7">Age</span>
+              <input [attr.disabled]="isInfo?'disabled' : null" type="number"
+                     min="1" #age="ngModel"
+                     class="form-control" placeholder="age"
+                     name="age" [(ngModel)]="userModal.age"
+                     aria-label="Age" aria-describedby="basic-addon7">
+            </div>
+            <small class="text-danger" [class.d-none]="age.valid || age.untouched">Age must be 1 or above</small>
+          </div>
+
+
+          <div>
+            Gender:
+            <div class="form-check form-check-inline">
+              <input [attr.disabled]="isInfo?'disabled' : null" type="radio" class="form-check-input" name="gender"
+                     id="male" [(ngModel)]="userModal.gender" value="M">
+              <label class="form-check-label" for="male">Male</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [attr.disabled]="isInfo?'disabled' : null" type="radio" class="form-check-input" name="gender"
+                     id="female" [(ngModel)]="userModal.gender" value="F">
+              <label class="form-check-label" for="female">Female</label>
+            </div>
+          </div>
+
+          <div class="form-group" *ngIf="!isCreate">
+            <label for="roles">Roles</label>
+            <select [attr.disabled]="isInfo?'disabled' : null" class="form-control" id="roles" name="roles"
+                    [(ngModel)]="roles[0].name">
+              <option value="ROLE_USER">USER</option>
+              <option value="ROLE_ADMIN">ADMIN</option>
+            </select>
+          </div>
+
+
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon8">City</span>
+            <input [attr.disabled]="isInfo?'disabled' : null" type="text" class="form-control" placeholder="city"
+                   name="city" [(ngModel)]="userModal.city" aria-label="City" aria-describedby="basic-addon8">
+          </div>
+
+
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon9">State</span>
+            <input [attr.disabled]="isInfo?'disabled' : null" type="text" class="form-control" placeholder="state"
+                   name="state" [(ngModel)]="userModal.state" aria-label="State" aria-describedby="basic-addon9">
+          </div>
+
+
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon10">Address</span>
+            <input [attr.disabled]="isInfo?'disabled' : null" type="text" class="form-control" placeholder="address"
+                   name="address" [(ngModel)]="userModal.address" aria-label="Address" aria-describedby="basic-addon10">
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button class="btn btn-primary" [attr.disabled]="isInfo || f.invalid?'disabled' : null">Send</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+
