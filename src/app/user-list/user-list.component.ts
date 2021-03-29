@@ -61,7 +61,7 @@ export class UserListComponent implements OnInit {
     this.userModal.id = user.id;
     this.userModal.username = user.username;
     this.userModal.email = user.email;
-
+    this.userModal.employer = user.employer;
     this.userModal.password = user.password;
     this.userModal.account_number = user.account_number;
     this.userModal.balance = user.balance;
@@ -123,6 +123,13 @@ export class UserListComponent implements OnInit {
           console.log(error);
         })
       }
+      if(this.searchField == 'employer'){
+              this.sv.searchEmployer(this.search).subscribe(res =>{
+                this.userList = res;
+              },error => {
+                console.log(error);
+              })
+            }
       if(this.searchField == 'account_number'){
         this.sv.searchAccountNumber(this.search).subscribe(res =>{
           this.userList = res;
@@ -190,7 +197,7 @@ export class UserListComponent implements OnInit {
 
 
   checkSearch() {
-    this.isText = this.searchField == 'name' || this.searchField == 'address';
+    this.isText = this.searchField == 'name' || this.searchField == 'address' || this.searchField == 'employer';
   }
 
   openModalInfo(user: any) {
@@ -205,7 +212,7 @@ export class UserListComponent implements OnInit {
     this.userModal.lastname = user.lastname;
     this.userModal.age = user.age;
     this.userModal.gender = user.gender;
-
+    this.userModal.employer = user.employer;
     this.roles[0].name = user.roles[0].name;
     this.userModal.roles = this.roles;
 

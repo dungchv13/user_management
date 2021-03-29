@@ -43,8 +43,8 @@ export class UserService {
     return this.http.get<User[]>(searchAddressUrl);
   }
   // searchAccountNumber
-  searchAccountNumber(AccountNumber: string){
-    const searchAccountNumberUrl = this.url+'/searchAccountNumber/'+AccountNumber;
+  searchAccountNumber(accountNumber: string){
+    const searchAccountNumberUrl = this.url+'/searchAccountNumber/'+accountNumber;
     return this.http.get<User[]>(searchAccountNumberUrl);
   }
   // searchBalanceG
@@ -56,5 +56,11 @@ export class UserService {
   searchBalanceL(balance: string){
     const searchBalanceLUrl = this.url+'/searchBalanceL/'+balance;
     return this.http.get<User[]>(searchBalanceLUrl);
+  }
+
+  //searchEmployer
+  searchEmployer(employer: string){
+    const searchEmployerUrl = this.url + '/searchEmployer/' + employer;
+    return this.http.get<User[]>(searchEmployerUrl);
   }
 }

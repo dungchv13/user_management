@@ -10,9 +10,9 @@
         <option value="name">Email or Name</option>
         <option value="address">Address</option>
         <option value="account_number">Account Number</option>
-
         <option value="balanceG">Balance greater than</option>
         <option value="balanceL">Balance less than</option>
+        <option value="employer">Employer</option>
 
       </select>
       <input class="form-control" [type]="isText? 'text' : 'number'" name="search" [(ngModel)]="search"
@@ -94,7 +94,7 @@
 
 
           <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon0">Username</span>
+            <span class="input-group-text col-3" id="basic-addon0">Username</span>
             <input [attr.disabled]="isInfo?'disabled' : null" type="text"
                    class="form-control" placeholder="Username" name="username"
                    [(ngModel)]="userModal.username" aria-label="Username"
@@ -103,7 +103,7 @@
 
           <div class="mb-3">
             <div class="input-group">
-              <span class="input-group-text" id="basic-addon1">Email</span>
+              <span class="input-group-text col-3" id="basic-addon1">Email</span>
               <input [attr.disabled]="isInfo?'disabled' : null" type="text"
                      required pattern="[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+" #email="ngModel"
                      [class.is-invalid]="email.invalid && email.touched"
@@ -116,22 +116,23 @@
               <small class="text-danger" *ngIf="email.errors?.pattern">Wrong pattern ex: name@gmail.com</small>
             </div>
           </div>
-
-          <div class="mb-3">
-            <div class="input-group" *ngIf="!isInfo">
-              <span class="input-group-text" id="basic-addon2">Password</span>
-              <input type="text" class="form-control" placeholder="password"
-                     name="password" [(ngModel)]="userModal.password"
-                     aria-label="password" aria-describedby="basic-addon2">
-            </div>
-            <!--            pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" #password="ngModel"-->
-            <!--            [class.is-invalid]="password.invalid && password.touched"-->
-            <!--            <small class="text-danger" [class.d-none]="password.valid || password.untouched">Minimum eight characters, at least one letter and one number</small>-->
-          </div>
+<!--password-->
+<!--          <div class="mb-3">-->
+<!--            <div class="input-group" *ngIf="!isInfo">-->
+<!--              <span class="input-group-text col-3" id="basic-addon2">Password</span>-->
+<!--              <input type="text" class="form-control col-9" placeholder="password"-->
+<!--                     required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" #password="ngModel"-->
+<!--                     [class.is-invalid]="password.invalid && password.touched"-->
+<!--                     name="password" [(ngModel)]="userModal.password"-->
+<!--                     aria-label="password" aria-describedby="basic-addon2">-->
+<!--              <small class="text-danger" [class.d-none]="password.valid || password.untouched">Minimum eight characters,-->
+<!--                at least one letter and one number</small>-->
+<!--            </div>-->
+<!--          </div>-->
 
           <div class="mb-3">
             <div class="input-group ">
-              <span class="input-group-text" id="basic-addon3">Account number</span>
+              <span class="input-group-text col-3" id="basic-addon3">Account</span>
               <input [attr.disabled]="isInfo?'disabled' : null" type="number"
                      required #account_number="ngModel"
                      [class.is-invalid]="account_number.invalid && account_number.touched"
@@ -145,14 +146,14 @@
 
 
           <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon4">Balance</span>
+            <span class="input-group-text col-3" id="basic-addon4">Balance</span>
             <input [attr.disabled]="isInfo?'disabled' : null" type="number" class="form-control" placeholder="balance"
                    name="balance" [(ngModel)]="userModal.balance" aria-label="Balance" aria-describedby="basic-addon4">
           </div>
 
 
           <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon5">Firstname</span>
+            <span class="input-group-text col-3" id="basic-addon5">Firstname</span>
             <input [attr.disabled]="isInfo?'disabled' : null" type="text" class="form-control" placeholder="firstname"
                    name="firstname" [(ngModel)]="userModal.firstname" aria-label="Firstname"
                    aria-describedby="basic-addon5">
@@ -160,22 +161,29 @@
 
 
           <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon6">Lastname</span>
+            <span class="input-group-text col-3" id="basic-addon6">Lastname</span>
             <input [attr.disabled]="isInfo?'disabled' : null" type="text" class="form-control" placeholder="lastname"
                    name="lastname" [(ngModel)]="userModal.lastname" aria-label="Lastname"
                    aria-describedby="basic-addon6">
           </div>
 
+          <div class="input-group mb-3">
+            <span class="input-group-text col-3" id="basic-addon11">Employer</span>
+            <input [attr.disabled]="isInfo?'disabled' : null" type="text" class="form-control" placeholder="employer"
+                   name="employer" [(ngModel)]="userModal.employer" aria-label="Employer"
+                   aria-describedby="basic-addon11">
+          </div>
+
           <div class="mb-3">
             <div class="input-group">
-              <span class="input-group-text" id="basic-addon7">Age</span>
+              <span class="input-group-text col-3" id="basic-addon7">Age</span>
               <input [attr.disabled]="isInfo?'disabled' : null" type="number"
-                     min="1" #age="ngModel"
+                     min="18" #age="ngModel"
                      class="form-control" placeholder="age"
                      name="age" [(ngModel)]="userModal.age"
                      aria-label="Age" aria-describedby="basic-addon7">
             </div>
-            <small class="text-danger" [class.d-none]="age.valid || age.untouched">Age must be 1 or above</small>
+            <small class="text-danger" [class.d-none]="age.valid || age.untouched">Age must be 18 or above</small>
           </div>
 
 
@@ -204,21 +212,21 @@
 
 
           <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon8">City</span>
+            <span class="input-group-text col-3" id="basic-addon8">City</span>
             <input [attr.disabled]="isInfo?'disabled' : null" type="text" class="form-control" placeholder="city"
                    name="city" [(ngModel)]="userModal.city" aria-label="City" aria-describedby="basic-addon8">
           </div>
 
 
           <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon9">State</span>
+            <span class="input-group-text col-3" id="basic-addon9">State</span>
             <input [attr.disabled]="isInfo?'disabled' : null" type="text" class="form-control" placeholder="state"
                    name="state" [(ngModel)]="userModal.state" aria-label="State" aria-describedby="basic-addon9">
           </div>
 
 
           <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon10">Address</span>
+            <span class="input-group-text col-3" id="basic-addon10">Address</span>
             <input [attr.disabled]="isInfo?'disabled' : null" type="text" class="form-control" placeholder="address"
                    name="address" [(ngModel)]="userModal.address" aria-label="Address" aria-describedby="basic-addon10">
           </div>

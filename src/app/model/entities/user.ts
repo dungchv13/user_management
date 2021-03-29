@@ -10,6 +10,8 @@ export interface User {
   firstname?: string;
   lastname?: string;
 
+  employer?: string;
+
   age?: number;
   gender?: string;
 
