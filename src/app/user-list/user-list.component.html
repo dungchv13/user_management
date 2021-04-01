@@ -16,7 +16,7 @@
 
       </select>
       <input class="form-control" [type]="isText? 'text' : 'number'" name="search" [(ngModel)]="search"
-             placeholder="Search">
+             placeholder="Search" (keydown.enter)="onSearch()">
       <button (click)="onSearch()" class="btn-success">Search</button>
     </div>
   </div>
@@ -116,19 +116,20 @@
               <small class="text-danger" *ngIf="email.errors?.pattern">Wrong pattern ex: name@gmail.com</small>
             </div>
           </div>
+
 <!--password-->
-<!--          <div class="mb-3">-->
-<!--            <div class="input-group" *ngIf="!isInfo">-->
-<!--              <span class="input-group-text col-3" id="basic-addon2">Password</span>-->
-<!--              <input type="text" class="form-control col-9" placeholder="password"-->
-<!--                     required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" #password="ngModel"-->
-<!--                     [class.is-invalid]="password.invalid && password.touched"-->
-<!--                     name="password" [(ngModel)]="userModal.password"-->
-<!--                     aria-label="password" aria-describedby="basic-addon2">-->
-<!--              <small class="text-danger" [class.d-none]="password.valid || password.untouched">Minimum eight characters,-->
-<!--                at least one letter and one number</small>-->
-<!--            </div>-->
-<!--          </div>-->
+          <div class="mb-3">
+            <div class="input-group" *ngIf="isCreate">
+              <span class="input-group-text col-3" id="basic-addon2">Password</span>
+              <input type="text" class="form-control col-9" placeholder="password"
+                     required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" #password="ngModel"
+                     [class.is-invalid]="password.invalid && password.touched"
+                     name="password" [(ngModel)]="userModal.password"
+                     aria-label="password" aria-describedby="basic-addon2">
+              <small class="text-danger" [class.d-none]="password.valid || password.untouched">Minimum eight characters,
+                at least one letter and one number</small>
+            </div>
+          </div>
 
           <div class="mb-3">
             <div class="input-group ">
