@@ -9,7 +9,7 @@ import {compareSegments} from '@angular/compiler-cli/src/ngtsc/sourcemaps/src/se
 export class UserService {
 
   // url = "http://localhost:8080/user"
-  url = "http://user-management-hero.herokuapp.com/user"
+  url = "https://user-management-hero.herokuapp.com/user"
   constructor(private http: HttpClient) { }
 
   getListUser(){

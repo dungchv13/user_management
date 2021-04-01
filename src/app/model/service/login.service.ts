@@ -18,7 +18,7 @@ export class LoginService {
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
   // url = "http://localhost:8080"
-  url = "http://user-management-hero.herokuapp.com"
+  url = "https://user-management-hero.herokuapp.com"
   constructor(
     private http: HttpClient,
     private tokenStorage: TokenStorageService
